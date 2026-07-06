@@ -9,3 +9,5 @@ node_modules
 
 input
 output
+
+scratch/*.txt
