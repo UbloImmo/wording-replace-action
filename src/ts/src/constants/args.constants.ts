@@ -8,7 +8,7 @@ export const ARGS_OPTIONS: ParseArgsOptionsConfig = {
     type: "string",
   },
   input: {
-    short: "a",
+    short: "i",
     type: "string",
   },
   output: {
