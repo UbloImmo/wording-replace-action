@@ -26,6 +26,7 @@ async function read(args: Required<Args>, logger: AliasLogger) {
 }
 
 async function main() {
+  const start = performance.now();
   const args = parseInputArgs();
   const logger = getLogger(args);
 
@@ -44,6 +45,11 @@ async function main() {
   await DB_POOL.end();
 
   await logger.writeHistory();
+
+  const end = performance.now();
+
+  const duration = end - start;
+  logger.debug(`main execution took ${duration}ms`);
 
   return;
 }
