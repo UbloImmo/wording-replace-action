@@ -1,10 +1,20 @@
-import type { API } from "./api.types";
-import type { SpacyDependency } from "./spacy.types";
-import type { Word, WordGender, WordNumber } from "./word.types";
+import type { Word, WordGender } from "./word.types";
 
+/**
+ * Defines a single word to use as replacement
+ */
 export type WordReplacement = {
+  /**
+   * Singular form of the replacement
+   */
   singular: Word;
+  /**
+   * Plural form of the replacement
+   */
   plural: Word;
+  /**
+   * Gender of the replacement
+   */
   gender: WordGender;
 };
 
