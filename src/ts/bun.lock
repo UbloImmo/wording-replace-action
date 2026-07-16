@@ -6,7 +6,7 @@
       "name": "word-replacer",
       "dependencies": {
         "@lingui/format-po": "^6.0.1",
-        "@ubloimmo/front-util": "^0.0.19",
+        "@ubloimmo/front-util": "^0.0.21",
         "mysql2": "^3.22.5",
         "ts-dedent": "^2.2.0",
       },
@@ -26,6 +26,7 @@
         "eslint-import-resolver-typescript": "^4.4.4",
         "eslint-plugin-prettier": "^5.5.5",
         "prettier": "^3.8.3",
+        "typescript": "^6.0.3",
       },
       "peerDependencies": {
         "typescript": "^6.0.3",
@@ -135,7 +136,7 @@
 
     "@typescript-eslint/visitor-keys": ["@typescript-eslint/visitor-keys@8.59.4", "", { "dependencies": { "@typescript-eslint/types": "8.59.4", "eslint-visitor-keys": "^5.0.0" } }, "sha512-U3gxVaDVnuZKhSspW/MzMxE1kq7zOdc072FcSNoqA1I9p8HyKbBFfEHoWckBAMgNMph4MamwS5iTVzFmrnt8TQ=="],
 
-    "@ubloimmo/front-util": ["@ubloimmo/front-util@0.0.19", "", { "peerDependencies": { "typescript": "^5.5.4" } }, "sha512-6EJU6pCx6/mOUZwzb+xQI8C6mZYEgPMQl5xI1ErW1qzEN+DFlX1RQut5dtefphspJqnV5b/gI1HXnZ7qsAcYhg=="],
+    "@ubloimmo/front-util": ["@ubloimmo/front-util@0.0.21", "", { "peerDependencies": { "typescript": "^5.5.4" } }, "sha512-wrbcMMu3BzNZ0ZRHuWFsDgjGjbCQu9/acD/kiblUPdCVHHVdQcrc2YlCDX4bIjW6Vd2bBZ+aP9paPE6OyYkDeA=="],
 
     "@unrs/resolver-binding-android-arm-eabi": ["@unrs/resolver-binding-android-arm-eabi@1.12.2", "", { "os": "android", "cpu": "arm" }, "sha512-g5T90pqg1bo/7mytQx6F4iBNC0Wsh9cu+z9veDbFjc7HjpesJFWD7QMS0NGStXM075+7dJPPVvBbpZlnrdpi/w=="],
 

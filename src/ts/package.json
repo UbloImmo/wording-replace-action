@@ -2,8 +2,10 @@
   "name": "words",
   "module": "src/index.ts",
   "type": "module",
-  "scipts": {
-    "dev": "bun run src/index.ts"
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "test:types": "tsc --noEmit",
+    "test:types:watch": "tsc --noEmit --watch"
   },
   "devDependencies": {
     "@eslint/compat": "^2.1.0",
@@ -20,14 +22,15 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-prettier": "^5.5.5",
-    "prettier": "^3.8.3"
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "typescript": "^6.0.3"
   },
   "dependencies": {
     "@lingui/format-po": "^6.0.1",
-    "@ubloimmo/front-util": "^0.0.19",
+    "@ubloimmo/front-util": "^0.0.21",
     "mysql2": "^3.22.5",
     "ts-dedent": "^2.2.0"
   }
