@@ -1,6 +1,6 @@
 import type { SpacyDependency } from "../types/spacy.types";
 
-export const OMITTED_RELATED_DEPENDENCIES: Set<SpacyDependency> = new Set([
+export const OMITTED_RELATED_DEPENDENCIES = new Set<SpacyDependency>([
   "punct",
   "obl:arg",
   "conj",
@@ -8,6 +8,7 @@ export const OMITTED_RELATED_DEPENDENCIES: Set<SpacyDependency> = new Set([
   "cc:preconj",
   "case",
   "nmod",
+  "acl",
 ]);
 
 export const USED_AS_ADJECTIVE: SpacyDependency = "amod";
