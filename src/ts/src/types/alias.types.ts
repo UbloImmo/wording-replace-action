@@ -16,6 +16,10 @@ export interface ParsedAlias extends Alias {
 
 export type AliasCollection = Alias[];
 
+export interface AliasInput {
+  aliases: AliasCollection;
+}
+
 export type ParsedAliasCollection = ParsedAlias[];
 
 export type AliasData = {
