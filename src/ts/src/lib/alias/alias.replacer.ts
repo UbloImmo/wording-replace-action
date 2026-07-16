@@ -241,9 +241,12 @@ export async function replacePOCatalogEntries(
 
   let i = 0;
 
+  let obsoleteCount = 0;
+
   for (const key in catalog) {
     const entry = catalog[key];
     if (!entry || entry.obsolete) {
+      obsoleteCount++;
       i++;
       continue;
     }
@@ -291,7 +294,7 @@ export async function replacePOCatalogEntries(
   }
 
   logger.info(
-    `Replaced ${replacements.size} entries out of ${objectKeys(catalog).length}.`
+    `Replaced ${replacements.size} entries out of ${objectKeys(catalog).length} (${obsoleteCount} obsolete entries).`
   );
 
   interact.close();
