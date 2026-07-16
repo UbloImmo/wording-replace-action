@@ -4,31 +4,42 @@
   "definitions": {
     "Alias": {
       "additionalProperties": false,
+      "description": "A single alias that defines one or more word matches to match against and a single replacement to use if matched",
       "properties": {
         "match": {
-          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWordMatch%3E"
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWordMatch%3E",
+          "description": "One or more words to match against all messages"
         },
         "replace": {
-          "$ref": "#/definitions/WordReplacement"
+          "$ref": "#/definitions/WordReplacement",
+          "description": "A single word to use if any matches in the aliases was found in a message"
         }
       },
-      "required": ["match", "replace"],
+      "required": [
+        "match",
+        "replace"
+      ],
       "type": "object"
     },
     "AliasCollection": {
+      "description": "Collection of aliases to use when replacing messages",
       "items": {
         "$ref": "#/definitions/Alias"
       },
       "type": "array"
     },
     "AliasInput": {
-      "additionalProperties": false,
+      "additionalProperties": true,
+      "description": "Input object containing a collection of aliases",
       "properties": {
         "aliases": {
-          "$ref": "#/definitions/AliasCollection"
+          "$ref": "#/definitions/AliasCollection",
+          "description": "Collection of aliases to use when replacing messages"
         }
       },
-      "required": ["aliases"],
+      "required": [
+        "aliases"
+      ],
       "type": "object"
     },
     "ItemOrArr<WordMatchIgore>": {
@@ -42,7 +53,8 @@
           },
           "type": "array"
         }
-      ]
+      ],
+      "description": "Either an item or an array that may be empty"
     },
     "ItemOrNonEmptyArr<Word>": {
       "anyOf": [
@@ -52,7 +64,8 @@
         {
           "$ref": "#/definitions/NonEmptyArr%3CWord%3E"
         }
-      ]
+      ],
+      "description": "Either a non-empty array or an item"
     },
     "ItemOrNonEmptyArr<WordMatch>": {
       "anyOf": [
@@ -62,9 +75,11 @@
         {
           "$ref": "#/definitions/NonEmptyArr%3CWordMatch%3E"
         }
-      ]
+      ],
+      "description": "Either a non-empty array or an item"
     },
     "NonEmptyArr<Word>": {
+      "description": "Array that must at lease contain one item",
       "items": {
         "$ref": "#/definitions/Word"
       },
@@ -72,6 +87,7 @@
       "type": "array"
     },
     "NonEmptyArr<WordMatch>": {
+      "description": "Array that must at lease contain one item",
       "items": {
         "$ref": "#/definitions/WordMatch"
       },
@@ -84,58 +100,86 @@
     },
     "WordGender": {
       "description": "A word's gender\n\nEither `f`: feminine Or `m`: masculine",
-      "enum": ["f", "m"],
+      "enum": [
+        "f",
+        "m"
+      ],
       "type": "string"
     },
     "WordMatch": {
       "additionalProperties": false,
+      "description": "Matches one or more word forms for replacement",
       "properties": {
         "gender": {
-          "$ref": "#/definitions/WordGender"
+          "$ref": "#/definitions/WordGender",
+          "description": "The gender of the word to match. Either `f` for feminine or `m` for masculine."
         },
         "ignore": {
-          "$ref": "#/definitions/ItemOrArr%3CWordMatchIgore%3E"
+          "$ref": "#/definitions/ItemOrArr%3CWordMatchIgore%3E",
+          "default": [],
+          "description": "Optional array of word forms to ignore"
         },
         "ignoreAsAdjective": {
+          "default": false,
+          "description": "French language uses a lot of common nouns as adjectives. If set to `true`, the match will be ignored if it is determined to be used as an adjective in a sentence",
           "type": "boolean"
         },
         "plural": {
-          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E"
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E",
+          "description": "One or more plural forms of the word or sentence to match against"
         },
         "singular": {
-          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E"
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E",
+          "description": "One or more singular forms of the word or sentence to match against"
         }
       },
-      "required": ["singular", "plural", "gender"],
+      "required": [
+        "singular",
+        "plural",
+        "gender"
+      ],
       "type": "object"
     },
     "WordMatchIgore": {
       "additionalProperties": false,
       "properties": {
         "plural": {
-          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E"
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E",
+          "description": "One or more plural forms of the word to match to ignore"
         },
         "singular": {
-          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E"
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E",
+          "description": "One or more singular forms of the word to match to ignore"
         }
       },
-      "required": ["singular", "plural"],
+      "required": [
+        "singular",
+        "plural"
+      ],
       "type": "object"
     },
     "WordReplacement": {
       "additionalProperties": false,
+      "description": "Defines a single word to use as replacement",
       "properties": {
         "gender": {
-          "$ref": "#/definitions/WordGender"
+          "$ref": "#/definitions/WordGender",
+          "description": "Gender of the replacement"
         },
         "plural": {
-          "$ref": "#/definitions/Word"
+          "$ref": "#/definitions/Word",
+          "description": "Plural form of the replacement"
         },
         "singular": {
-          "$ref": "#/definitions/Word"
+          "$ref": "#/definitions/Word",
+          "description": "Singular form of the replacement"
         }
       },
-      "required": ["singular", "plural", "gender"],
+      "required": [
+        "singular",
+        "plural",
+        "gender"
+      ],
       "type": "object"
     }
   }
