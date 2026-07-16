@@ -2,7 +2,7 @@ run-ts:
     bun run src/ts/src/index.ts -v
 
 gen-json-schema:
-    cd src/ts && bunx ts-json-schema-generator --path './src/types/alias.types.ts' --type 'AliasInput' --out ../../schema.json
+    ./scripts/generate-json-schema.sh
 
 test-types:
     cd src/ts && bun test:types
