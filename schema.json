@@ -1,0 +1,142 @@
+{
+  "$ref": "#/definitions/AliasInput",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Alias": {
+      "additionalProperties": false,
+      "properties": {
+        "match": {
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWordMatch%3E"
+        },
+        "replace": {
+          "$ref": "#/definitions/WordReplacement"
+        }
+      },
+      "required": ["match", "replace"],
+      "type": "object"
+    },
+    "AliasCollection": {
+      "items": {
+        "$ref": "#/definitions/Alias"
+      },
+      "type": "array"
+    },
+    "AliasInput": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "$ref": "#/definitions/AliasCollection"
+        }
+      },
+      "required": ["aliases"],
+      "type": "object"
+    },
+    "ItemOrArr<WordMatchIgore>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/WordMatchIgore"
+        },
+        {
+          "items": {
+            "$ref": "#/definitions/WordMatchIgore"
+          },
+          "type": "array"
+        }
+      ]
+    },
+    "ItemOrNonEmptyArr<Word>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Word"
+        },
+        {
+          "$ref": "#/definitions/NonEmptyArr%3CWord%3E"
+        }
+      ]
+    },
+    "ItemOrNonEmptyArr<WordMatch>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/WordMatch"
+        },
+        {
+          "$ref": "#/definitions/NonEmptyArr%3CWordMatch%3E"
+        }
+      ]
+    },
+    "NonEmptyArr<Word>": {
+      "items": {
+        "$ref": "#/definitions/Word"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "NonEmptyArr<WordMatch>": {
+      "items": {
+        "$ref": "#/definitions/WordMatch"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "Word": {
+      "description": "A single word",
+      "type": "string"
+    },
+    "WordGender": {
+      "description": "A word's gender\n\nEither `f`: feminine Or `m`: masculine",
+      "enum": ["f", "m"],
+      "type": "string"
+    },
+    "WordMatch": {
+      "additionalProperties": false,
+      "properties": {
+        "gender": {
+          "$ref": "#/definitions/WordGender"
+        },
+        "ignore": {
+          "$ref": "#/definitions/ItemOrArr%3CWordMatchIgore%3E"
+        },
+        "ignoreAsAdjective": {
+          "type": "boolean"
+        },
+        "plural": {
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E"
+        },
+        "singular": {
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E"
+        }
+      },
+      "required": ["singular", "plural", "gender"],
+      "type": "object"
+    },
+    "WordMatchIgore": {
+      "additionalProperties": false,
+      "properties": {
+        "plural": {
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E"
+        },
+        "singular": {
+          "$ref": "#/definitions/ItemOrNonEmptyArr%3CWord%3E"
+        }
+      },
+      "required": ["singular", "plural"],
+      "type": "object"
+    },
+    "WordReplacement": {
+      "additionalProperties": false,
+      "properties": {
+        "gender": {
+          "$ref": "#/definitions/WordGender"
+        },
+        "plural": {
+          "$ref": "#/definitions/Word"
+        },
+        "singular": {
+          "$ref": "#/definitions/Word"
+        }
+      },
+      "required": ["singular", "plural", "gender"],
+      "type": "object"
+    }
+  }
+}
