@@ -10,6 +10,7 @@ import type { NonEmptyArr } from "../../types/global.types";
 import type { AliasVariant, AliasVariantMap } from "../../types/variant.types";
 import { toNonEmptyArray } from "../../utils/array.utils";
 import { derivePrefixVariants } from "../../utils/variant.utils";
+import type { AliasLogger } from "../../utils/log.utils";
 
 function parseAlias(alias: Alias): ParsedAlias {
   const variants = [] as unknown as NonEmptyArr<AliasVariant>;
@@ -43,7 +44,8 @@ function parseAlias(alias: Alias): ParsedAlias {
 }
 
 function buildAliasMap(
-  parsedCollection: ParsedAliasCollection
+  parsedCollection: ParsedAliasCollection,
+  logger: AliasLogger
 ): AliasVariantMap {
   const variants: AliasVariant[] = [];
 
@@ -60,19 +62,11 @@ function buildAliasMap(
 
   for (const variant of variants) {
     if (map.has(variant.match.word)) {
-      console.error(`Duplicate match found: ${variant.match.word}`);
+      logger.error(`Duplicate match found: ${variant.match.word}`);
     }
     map.set(variant.match.word, variant);
   }
 
-  // for (const alias of parsedCollection) {
-  //   for (const variant of alias.variants) {
-  //     if (map.has(variant.match.word)) {
-  //       console.error(`Duplicate match found: ${variant.match.word}`);
-  //     }
-  //     map.set(variant.match.word, variant);
-  //   }
-  // }
   return map;
 }
 
@@ -84,9 +78,12 @@ function parseAliasCollection(
     .sort((a, b) => b.maxMatchLength - a.maxMatchLength);
 }
 
-export function parseAliasData(sourceAliases: AliasCollection): AliasData {
+export function parseAliasData(
+  sourceAliases: AliasCollection,
+  logger: AliasLogger
+): AliasData {
   const parsedAliases = parseAliasCollection(sourceAliases);
-  const aliasMap = buildAliasMap(parsedAliases);
+  const aliasMap = buildAliasMap(parsedAliases, logger);
   return {
     sourceAliases,
     parsedAliases,
