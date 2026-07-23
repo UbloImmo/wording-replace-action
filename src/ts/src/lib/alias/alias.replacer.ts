@@ -24,6 +24,7 @@ import { delay } from "../../utils/timing.utils";
 import { interaction } from "../../utils/interaction.utils";
 import { replaceDirectDet } from "../../utils/prefix.utils";
 import { ALLOWED_MATCH_PREV_CHARS } from "../../constants/alias.constants";
+import dedent from "ts-dedent";
 
 export async function findReplacements(
   message: string,
@@ -177,7 +178,6 @@ export async function replaceEntry(
 
       // sequencially apply replacements to message
       for (const replacement of replacements) {
-        console.log(replacement.replace.startIndex);
         ENTRY_REPLACEMENTS.add(replacement);
         const replaced = splice(
           message,
@@ -223,6 +223,8 @@ let DELAY: Optional<number>;
 let TARGET_ENTRY: Optional<number>;
 let INITIAL_ENTRY: Optional<number>;
 let STEP: Optional<boolean>;
+let VERIFY_AND_REPLACE: Optional<boolean>;
+// VERIFY_AND_REPLACE = true;
 // STEP = true;
 // DELAY = 1000;
 // TARGET_ENTRY = 258;
@@ -263,9 +265,29 @@ export async function replacePOCatalogEntries(
 
     const result = await replaceEntry(entry, aliasData, i, logger);
     if (isObject(result)) {
-      logger.line();
       if (result.matched) {
         if (result.replaced) {
+          if (VERIFY_AND_REPLACE) {
+            const isCorrect = await interact.confirm(dedent`
+              Original:
+              "${entry.translation}"
+
+              Replacement:
+              "${result.message}"
+
+              Is this replacement correct ?`);
+            if (!isCorrect) {
+              const userReplacement = await interact.input(
+                "Please write the replacement entry."
+              );
+              if (
+                isString(userReplacement) &&
+                userReplacement !== result.message
+              ) {
+                result.message = userReplacement;
+              }
+            }
+          }
           replacements.set(key, { ...entry, translation: result.message });
         } else {
           if (!result.replaced) {
