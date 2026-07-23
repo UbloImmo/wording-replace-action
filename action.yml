@@ -1,0 +1,58 @@
+name: Lingui word replace (FR)
+description: Replaces french words & sentences with aliases in lingui .po catalog files
+
+inputs:
+  aliases_json:
+    description: path to the aliases.json file to use for replacing aliases in the input PO catalog
+    required: true
+  input_catalog_po:
+    description: path to the PO catalog file to use as input
+    required: true
+  output_catalog_po:
+    description: path to the PO catalog file to write as output
+    required: true
+  verbose:
+    description: whether to display additional logs
+    required: false
+  output_log_txt:
+    default: ./log.txt
+    description: path to the log file to write as a trace of logs
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      name: Initialize mysql & python services
+      run: docker compose \
+        --project-directory "${{ github.action_path }}" \
+        -f "${{ github.action_path }}/compose.yml" \
+        up -d --wait mysql python
+
+    - shell: bash
+      name: Replace aliases in input catalog
+      env:
+        ALIASES_JSON: ${{ inputs.aliases_json }}
+        INPUT_CATALOG_PO: ${{ inputs.input_catalog_po }}
+        OUTPUT_CATALOG_PO: ${{ inputs.output_catalog_po }}
+        VERBOSE: ${{ inputs.verbose }}
+        OUTPUT_LOG_TXT: ${{ inputs.output_log_txt }}
+      run: docker compose \
+        --project-directory "${{ github.action_path }}" \
+        -f "${{ github.action_path }}/compose.yml" \
+        run --rm \
+        -e GITHUB_WORKSPACE="$GITHUB_WORKSPACE"
+        ts \
+        --aliases="/workspace/$ALIASES_JSON" \
+        --input="/workspace/$INPUT_CATALOG_PO" \
+        --output="/workspace/$OUTPUT_CATALOG_PO" \
+        --verbose="/workspace/$VERBOSE" \
+        --logTo="/workspace/$OUTPUT_LOG_TXT"
+
+    - shell: bash
+      if: always()
+      name: Cleanup services
+      run: docker compose \
+        --project-directory "${{ github.action_path }}" \
+        -f "${{ github.action_path }}/compose.yml" \
+        down -v
