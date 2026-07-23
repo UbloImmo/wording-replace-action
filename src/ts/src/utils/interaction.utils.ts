@@ -13,7 +13,6 @@ export function interaction() {
       case "":
         return true;
       default:
-        console.log({ choice });
         return false;
     }
   }
