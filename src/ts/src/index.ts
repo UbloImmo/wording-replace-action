@@ -16,7 +16,7 @@ async function read(args: Required<Args>, logger: AliasLogger) {
     readPOCatalog(args.input, logger),
   ]);
 
-  const aliases = parseAliasData(aliasesInput);
+  const aliases = parseAliasData(aliasesInput, logger);
   const catalog = await parsePOCatalog(messagesInput, logger);
 
   return {
@@ -44,13 +44,14 @@ async function main() {
 
   await DB_POOL.end();
 
-  await logger.writeHistory();
-
   const end = performance.now();
 
   const duration = end - start;
   logger.debug(`main execution took ${duration}ms`);
 
+  if (args.verbose) {
+    await logger.writeHistory();
+  }
   return;
 }
 
