@@ -1,8 +1,39 @@
 services:
-  db:
-    image: mysql
-    restart: always
+  mysql:
+    image: blksnk/morphalou-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 2s
+      retries: 30
     ports:
       - 3306:3306
+
+  python:
+    build: ./src/python
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')",
+        ]
+      interval: 2s
+      retries: 30
+    ports:
+      - 8000:8000
+
+  ts:
+    build: ./src/ts
+    working_dir: /workspace
+    environment:
+      API_URL: http://python:8000
+    volumes:
+      - ${GITHUB_WORKSPACE}:/workspace
+    depends_on:
+      mysql:
+        condition: service_healthy
+      python:
+        condition: service_healthy
