@@ -48,7 +48,6 @@ export function splice(
   const before = start <= 0 ? "" : str.substring(0, start);
   const after = end >= str.length ? "" : str.substring(end);
 
-  console.log({ before, replaceWith, after });
   return `${before}${replaceWith}${after}`;
 }
 
