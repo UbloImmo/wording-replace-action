@@ -10,7 +10,10 @@ export function parseInputArgs() {
   const parsedArgs: Required<Args> = Object.assign(
     {},
     DEFAULT_ARGS,
-    args.values
+    args.values,
+    {
+      verbose: args.values?.verbose === "true",
+    }
   );
   return parsedArgs;
 }

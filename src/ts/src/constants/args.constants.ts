@@ -17,7 +17,7 @@ export const ARGS_OPTIONS: ParseArgsOptionsConfig = {
   },
   verbose: {
     short: "v",
-    type: "boolean",
+    type: "string",
   },
   logTo: {
     short: "l",
