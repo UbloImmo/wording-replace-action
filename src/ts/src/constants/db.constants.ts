@@ -6,7 +6,7 @@ import type { SQL } from "bun";
 export const DB_CONFIG = {
   adapter: "mysql",
   tls: true,
-  host: "localhost",
+  host: "mysql",
   port: 3306,
   password: "root",
   username: "root",
