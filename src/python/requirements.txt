@@ -1,6 +1,3 @@
-pip
-setuptools
-wheel
-
 spacy
 fastapi[standard]
+pydantic
