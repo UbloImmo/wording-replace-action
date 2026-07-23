@@ -1,6 +1,7 @@
 import { createInterface } from "node:readline/promises";
 import { exit, stdin, stdout } from "node:process";
 import { toLowerCase } from "./string.utils";
+import { Nullable } from "@ubloimmo/front-util";
 
 export function interaction() {
   const readline = createInterface({ input: stdin, output: stdout });
@@ -17,8 +18,16 @@ export function interaction() {
     }
   }
 
+  async function input(inputPrompt: string): Promise<Nullable<string>> {
+    const answer = await readline.question(inputPrompt);
+    const choice = answer.trim();
+    if (!choice.length) return null;
+    return choice;
+  }
+
   return {
     confirm,
+    input,
     question: readline.question.bind(readline),
     close: readline.close.bind(readline),
   };
