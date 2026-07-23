@@ -1,9 +1,9 @@
-import { writeFile } from "fs/promises";
 import { FORMATTER_INSTANCE } from "../../constants/po.constants";
 import type { RuntimeArgs } from "../../types/args.types";
 import type { POCatalog } from "../../types/po.types";
 import type { AliasLogger } from "../../utils/log.utils";
 import { time } from "../../utils/timing.utils";
+import { writeFileSafe } from "../../utils/file.utils";
 
 export async function writePOCatalog(
   catalog: POCatalog,
@@ -18,5 +18,5 @@ export async function writePOCatalog(
     existing: undefined,
   });
 
-  await writeFile(args.output, poStr);
+  await writeFileSafe(args.output, poStr);
 }

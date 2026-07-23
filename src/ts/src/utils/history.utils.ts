@@ -2,11 +2,9 @@ import dedent from "ts-dedent";
 import { toUpperCase } from "./string.utils";
 import { isString } from "@ubloimmo/front-util";
 
-import { writeFile } from "node:fs/promises";
 import type { RuntimeArgs } from "../types/args.types";
 import { isNonEmptyStr } from "./predicate.utils";
-
-// const HISTORY_PATH
+import { writeFileSafe } from "./file.utils";
 
 export class History {
   public readonly entries = new Map<number, string>();
@@ -19,12 +17,15 @@ export class History {
   public write(messageType: string, message: unknown, name?: string) {
     const now = new Date(Date.now()).toISOString();
 
-    const contentStr = isString(message) ? message : JSON.stringify(message);
+    const contentStr = isString(message)
+      ? message
+      : JSON.stringify(message, undefined, 2);
 
     const entry = dedent`
-${now} [${toUpperCase(messageType)}] ${isNonEmptyStr(name) ? `[${name}] ` : ""}${"=".repeat(20)}
+      ${now} [${toUpperCase(messageType)}] ${isNonEmptyStr(name) ? `[${name}] ` : ""}${"=".repeat(20)}
 
-${contentStr}`;
+      ${contentStr}
+    `.trim();
 
     const ts = performance.now();
 
@@ -37,6 +38,6 @@ ${contentStr}`;
       contents += entry;
       contents += "\n\n";
     }
-    await writeFile(this.args.logTo, contents);
+    await writeFileSafe(this.args.logTo, contents);
   }
 }
