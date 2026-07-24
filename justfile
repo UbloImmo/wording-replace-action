@@ -22,14 +22,27 @@ services-down:
 exec: services-up
     GITHUB_WORKSPACE="$HOME/code/projects/words" docker compose run --build --rm ts --aliases="/workspace/input/aliases.json" --input="/workspace/input/messages.po" --output="/workspace/output/messages.po" --logTo="/workspace/output/log.txt" --verbose="false"
 
-test: services-up
-    GITHUB_WORKSPACE="$HOME/code/projects/words" docker compose run --rm ts --aliases="/workspace/test/aliases.json" --input="/workspace/test/input.po" --output="/workspace/test/output.po" --logTo="/workspace/output/log.txt" --verbose="true"
+test:
+    GITHUB_WORKSPACE="$HOME/code/projects/words" docker compose run --build --rm ts --aliases="/workspace/tests/multi/aliases_2.json" --input="/workspace/tests/multi/input.po" --output="/workspace/tests/multi/aliases_2.po" --logTo="/workspace/tests/multi/log.txt" --verbose="true"
 
 inspect-ts:
     GITHUB_WORKSPACE="$HOME/code/projects/words" docker compose run --rm --entrypoint sh ts
 
+# Builds morphalou-mysql with a pre-initialized datadir (see db_source/Dockerfile)
+# and pushes linux/amd64 + linux/arm64. First build is slow (~SQL import per platform).
 build-db-image:
     #!/usr/bin/env bash
+    set -euo pipefail
     cd db_source
-    docker buildx create --name multiarch --use 2>/dev/null || docker buildx use multiarch
-    docker buildx build --platform linux/amd64,linux/arm64 -t blksnk/morphalou-mysql:latest --push .
+    if ! docker buildx inspect multiarch >/dev/null 2>&1; then
+      docker buildx create --name multiarch --driver docker-container --use
+    else
+      docker buildx use multiarch
+    fi
+    docker buildx inspect --bootstrap
+    docker buildx build \
+      --platform linux/amd64,linux/arm64 \
+      --tag blksnk/morphalou-mysql:latest \
+      --push \
+      --progress=plain \
+      .
