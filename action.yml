@@ -49,7 +49,7 @@ runs:
         OUTPUT_LOG_TXT: ${{ inputs.output_log_txt }}
       run: |
         for alias_filename in ${{ inputs.aliases_json_dir }}/*.json; do
-          output_filename="${{ inputs.output_catalog_dir }}/$(basename "$filename" .json).po"
+          output_filename="${{ inputs.output_catalog_dir }}/$(basename "$alias_filename" .json).po"
           echo "Applying aliases $alias_filename to input catalog $INPUT_CATALOG_PO, outputing $output_filename"
           docker compose \
             --project-directory "${{ github.action_path }}" \
