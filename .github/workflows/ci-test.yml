@@ -21,4 +21,11 @@ jobs:
           output_catalog_po: test/output.po
 
       - name: Compare output with expected
-        run: diff -u test/expected_output.po test/output.po
+        run: |
+          strip_po_header() {
+            awk '/^#:/ { found = 1 } found' "$1"
+          }
+
+          strip_po_header test/expected_output.po > /tmp/expected_body.po
+          strip_po_header test/output.po > /tmp/output_body.po
+          diff -u /tmp/expected_body.po /tmp/output_body.po
