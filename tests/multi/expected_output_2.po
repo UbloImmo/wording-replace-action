@@ -1,0 +1,82 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-04-19 16:37+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: fr\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src-index/features/Home.tsx:41
+#: src/features/rentals/rentalContract.v2/Forms/Signatories/extractSignatories.utils.ts:80
+#: src/features/rentals/rentalContract.v2/Forms/Signatories/transformContractSignatories.utils.ts:12
+msgid "Locataire"
+msgstr "Locatrice"
+
+#: src-shared/states/entityStates/tenantAccess.state.ts:7
+msgid "Activé par le locataire"
+msgstr "Activé par la locatrice"
+
+#: src-shared/states/entityStates/tenantAccess.state.ts:12
+msgid "En attente d'activation locataire"
+msgstr "En attente d'activation locatrice"
+
+#: src-tenants/features/auth/Login/Login.page.tsx:248
+msgid "Je n'ai pas de compte ? Je m'inscris"
+msgstr "Je n'ai pas de compte ? Je m'inscris"
+
+#: src-tenants/features/auth/Login/Login.page.tsx:253
+#: src-tenants/features/auth/Signup/PreSignup.page.tsx:193
+#: src-tenants/features/auth/Signup/Signup.page.tsx:145
+msgid "Politique de confidentialité et conditions générales d'utilisation."
+msgstr "Politique de confidentialité et conditions générales d'utilisation."
+
+#: src-tenants/features/auth/NoAccount.page.tsx:19
+msgid "Êtes-vous déjà locataire ?"
+msgstr "Êtes-vous déjà locatrice ?"
+
+#: src-tenants/features/auth/Onboarding/useOnboardingData.ts:18
+msgid "Bienvenue sur votre portail locataire"
+msgstr "Bienvenue sur votre portail locatrice"
+
+#: src-tenants/features/auth/Onboarding/useOnboardingData.ts:19
+msgid "Cet espace locataire vous est proposé par votre gestionnaire. Il vous permet de consulter toutes les informations utiles pour gérer votre location."
+msgstr "Cet espace locatrice vous est proposé par votre gestionnaire. Il vous permet de consulter toutes les informations utiles pour gérer votre location."
+
+#: src-tenants/features/legal/LegalNotice.page.tsx:117
+msgid "Au locataire, dans la limite de ses droits d'accès"
+msgstr "À la locatrice, dans la limite de ses droits d'accès"
+
+#: src-tenants/features/legal/LegalNotice.page.tsx:130
+msgid "Aux autorités compétentes sur demande légale"
+msgstr "Aux autorités compétentes sur demande légale"
+
+#: src/components/ConfirmationFormModal/ConfirmationWarning.component.tsx:36
+#: src/features/invoicing/Transactions/FormContents/TransactionRejection.formContent.tsx:81
+msgid "Cette action est irréversible."
+msgstr "Cette action est irréversible."
+
+#: src/components/EmptyState/EmptyStateTable.tsx:34
+msgid "{headingText}"
+msgstr "{headingText}"
+
+#: src/components/ExplainCard/Assets/TenantAccessAssets/TenantAccessPresentation.tsx:18
+msgid "L’accès au portail permet aux locataires de consulter leur solde et factures en autonomie."
+msgstr "L’accès au portail permet aux locatrices de consulter leur solde et factures en autonomie."
+
+#: src/components/NavMenu/links.data.ts:61
+#: src/features/rentals/rentalFolder/Edit/Menus/ActiveMenu.tsx:44
+#: src/features/rentals/rentalFolder/Edit/Menus/ArchivedMenu.tsx:17
+#: src/features/rentals/rentalFolder/Edit/Menus/ExitedMenu.tsx:43
+#: src/features/rentals/rentalFolder/Edit/Menus/InactiveMenu.tsx:18
+#: src/features/rentals/rentalFolder/Edit/Menus/PendingEntryMenu.tsx:38
+#: src/features/rentals/rentalFolder/Edit/Menus/PendingExitMenu.tsx:39
+#: src/features/rentals/rentalFolder/List/renderer/RentalFolderList.emptyTuto.tsx:35
+msgid "Locataires et garants"
+msgstr "Locatrices et garants"

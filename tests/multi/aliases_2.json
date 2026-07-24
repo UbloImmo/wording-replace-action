@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/UbloImmo/wording-replace-action/refs/heads/main/schema.json",
+  "aliases": [
+    {
+      "match": {
+        "singular": "locataire",
+        "plural": "locataires",
+        "gender": "m"
+      },
+      "replace": {
+        "singular": "locatrice",
+        "plural": "locatrices",
+        "gender": "f"
+      }
+    }
+  ]
+}
