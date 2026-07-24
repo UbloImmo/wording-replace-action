@@ -61,7 +61,7 @@ runs:
             --input="/workspace/$INPUT_CATALOG_PO"
             --output="/workspace/$output_filename"
             --verbose="$VERBOSE"
-            --logTo="/workspace/$OUTPUT_LOG_TXT
+            --logTo="/workspace/$OUTPUT_LOG_TXT"
         done
 
     - shell: bash
