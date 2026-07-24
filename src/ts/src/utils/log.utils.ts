@@ -41,7 +41,11 @@ export function getLogger(args: RuntimeArgs): AliasLogger {
       if (!name?.length && isObject(message)) {
         const keys = Object.keys(message);
         if (keys.length === 1 && !isUndefined(keys[0])) {
-          name = String(keys[0]);
+          const key = keys[0];
+          name = String(key);
+          if (key in message) {
+            message = (message as Record<string, unknown>)[key];
+          }
         }
       }
 
