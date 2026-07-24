@@ -24,3 +24,9 @@ exec: services-up
 
 inspect-ts:
     GITHUB_WORKSPACE="$HOME/code/projects/words" docker compose run --rm --entrypoint sh ts
+
+build-db-image:
+    #!/usr/bin/env bash
+    cd db_source
+    docker buildx create --name multiarch --use 2>/dev/null || docker buildx use multiarch
+    docker buildx build --platform linux/amd64,linux/arm64 -t blksnk/morphalou-mysql:latest --push .
