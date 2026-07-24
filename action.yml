@@ -1,5 +1,8 @@
 name: Replace french words in a lingui PO catalog
 description: Replaces french words & sentences with aliases in lingui .po catalog files
+branding:
+  icon: book-open
+  color: purple
 
 inputs:
   aliases_json:
