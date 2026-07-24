@@ -6,19 +6,19 @@ on:
       - main
 
 jobs:
-  test_action:
+  test_action_single:
     runs-on: ubuntu-latest
-    name: Test action with sample catalog
+    name: Test action with sample catalog and a single aliases json
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run wording replace action
         uses: ./
         with:
-          aliases_json: test/aliases.json
-          input_catalog_po: test/input.po
-          output_catalog_po: test/output.po
+          aliases_json: tests/single/aliases.json
+          input_catalog_po: tests/single/input.po
+          output_catalog_po: tests/single/output.po
 
       - name: Compare output with expected
         run: |
@@ -26,6 +26,33 @@ jobs:
             awk '/^#:/ { found = 1 } found' "$1"
           }
 
-          strip_po_header test/expected_output.po > /tmp/expected_body.po
-          strip_po_header test/output.po > /tmp/output_body.po
+          strip_po_header tests/single/expected_output.po > /tmp/expected_body.po
+          strip_po_header tests/single/output.po > /tmp/output_body.po
           diff -u /tmp/expected_body.po /tmp/output_body.po
+
+  test_action_multi:
+    runs-on: ubuntu-latest
+    name: Test action with sample catalog and multiple alias json files in a directory
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Run wording replace action on dir
+        uses: ./
+        with:
+          aliases_json_dir: tests/multi
+          input_catalog_po: tests/multi/input.po
+          output_catalog_dir: tests/multi
+
+      - name: Compare outputs with expected
+        run: |
+          strip_po_header() {
+            awk '/^#:/ { found = 1 } found' "$1"
+          }
+          strip_po_header tests/multi/expected_output_1.po > /tmp/expected_body_1.po
+          strip_po_header tests/multi/expected_output_2.po > /tmp/expected_body_2.po
+          strip_po_header tests/multi/aliases_1.po > /tmp/output_body_1.po
+          strip_po_header tests/multi/aliases_2.po > /tmp/output_body_2.po
+
+          diff -u /tmp/expected_body_1.po /tmp/output_body_1.po
+          diff -u /tmp/expected_body_2.po /tmp/output_body_2.po
