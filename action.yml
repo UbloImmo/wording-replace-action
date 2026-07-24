@@ -1,4 +1,4 @@
-name: Lingui word replace (FR)
+name: Replace french words in a lingui PO catalog
 description: Replaces french words & sentences with aliases in lingui .po catalog files
 
 inputs:
