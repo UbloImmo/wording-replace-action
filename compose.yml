@@ -1,29 +1,17 @@
 services:
   mysql:
     image: blksnk/morphalou-mysql
+    # Skip entrypoint chown path (datadir is already mysql-owned in the image).
+    user: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-    # Use 127.0.0.1 (TCP), not localhost (unix socket). During first-boot init the
-    # official MySQL image runs with --skip-networking while loading
-    # /docker-entrypoint-initdb.d (~138MB here); socket pings succeed then and
-    # compose --wait returns early, so dependents hit ECONNREFUSED on :3306.
-    # Querying lemma also ensures init scripts finished, not just mysqld up.
+    # Prefer TCP (127.0.0.1) over localhost/socket so readiness matches app clients.
     healthcheck:
-      test:
-        [
-          "CMD",
-          "mysql",
-          "-h",
-          "127.0.0.1",
-          "-uroot",
-          "-proot",
-          "-e",
-          "SELECT 1 FROM morphalou.lemma LIMIT 1",
-        ]
-      interval: 5s
-      timeout: 5s
-      retries: 60
-      start_period: 300s
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
     ports:
       - 3306:3306
 
