@@ -37,7 +37,7 @@ export const SINGULAR_F_PREFIXES: NonEmptyArr<Prefix> = [
   { prefix: "la ", shortPrefix: "l'" },
   { prefix: "de la ", shortPrefix: "de l'" },
   { prefix: "de ", shortPrefix: "d'" },
-  { prefix: "au", shortPrefix: "à l'" },
+  { prefix: "à la ", shortPrefix: "à l'" },
   { prefix: "une " },
   { prefix: "ma " },
   { prefix: "sa " },
