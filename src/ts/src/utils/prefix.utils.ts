@@ -95,10 +95,11 @@ export function replaceDirectDet(
     return null;
   }
 
-  const replacement =
-    !!replacementPrefix.shortPrefix && needsShortPrefix(variant.replace.word)
-      ? replacementPrefix.shortPrefix
-      : replacementPrefix.prefix;
+  const replaceWithShortPrefix =
+    !!replacementPrefix.shortPrefix && needsShortPrefix(variant.replace.word);
+  const replacement = replaceWithShortPrefix
+    ? replacementPrefix.shortPrefix!
+    : replacementPrefix.prefix;
 
   logger.debug({ det: det });
   logger.debug({ replacementDet: replacement });
@@ -109,7 +110,7 @@ export function replaceDirectDet(
   const replacementLength =
     matchedShortPrefix && isNumber(matchedPrefix.shortPrefix?.length)
       ? matchedPrefix.shortPrefix.length
-      : matchedPrefix.prefix.length + 1;
+      : matchedPrefix.prefix.length + (replaceWithShortPrefix ? 1 : 0);
 
   return {
     replace: {
