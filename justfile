@@ -22,6 +22,9 @@ services-down:
 exec: services-up
     GITHUB_WORKSPACE="$HOME/code/projects/words" docker compose run --build --rm ts --aliases="/workspace/input/aliases.json" --input="/workspace/input/messages.po" --output="/workspace/output/messages.po" --logTo="/workspace/output/log.txt" --verbose="false"
 
+test: services-up
+    GITHUB_WORKSPACE="$HOME/code/projects/words" docker compose run --rm ts --aliases="/workspace/test/aliases.json" --input="/workspace/test/input.po" --output="/workspace/test/output.po" --logTo="/workspace/output/log.txt" --verbose="true"
+
 inspect-ts:
     GITHUB_WORKSPACE="$HOME/code/projects/words" docker compose run --rm --entrypoint sh ts
 
