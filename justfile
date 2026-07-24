@@ -1,3 +1,5 @@
+set positional-arguments
+
 run-ts:
     bun run src/ts/src/index.ts -v
 
@@ -46,3 +48,8 @@ build-db-image:
       --push \
       --progress=plain \
       .
+
+@release-action tag description:
+    #!/usr/bin/env bash
+    git tag -a -m "$2" "$1"
+    git push --follow-tags
