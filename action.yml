@@ -51,16 +51,16 @@ runs:
         for alias_filename in ${{ inputs.aliases_json_dir }}/*.json; do
           output_filename="${{ inputs.output_catalog_dir }}/$(basename "$filename" .json).po"
           echo "Applying aliases $alias_filename to input catalog $INPUT_CATALOG_PO, outputing $output_filename"
-          docker compose
-            --project-directory "${{ github.action_path }}"
-            -f "${{ github.action_path }}/compose.yml"
-            run --rm
-            -e GITHUB_WORKSPACE="$GITHUB_WORKSPACE"
-            ts
-            --aliases="/workspace/$alias_filename"
-            --input="/workspace/$INPUT_CATALOG_PO"
-            --output="/workspace/$output_filename"
-            --verbose="$VERBOSE"
+          docker compose \
+            --project-directory "${{ github.action_path }}" \
+            -f "${{ github.action_path }}/compose.yml" \
+            run --rm \
+            -e GITHUB_WORKSPACE="$GITHUB_WORKSPACE" \
+            ts \
+            --aliases="/workspace/$alias_filename" \
+            --input="/workspace/$INPUT_CATALOG_PO" \
+            --output="/workspace/$output_filename" \
+            --verbose="$VERBOSE" \
             --logTo="/workspace/$OUTPUT_LOG_TXT"
         done
 
