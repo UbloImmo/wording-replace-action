@@ -1,4 +1,9 @@
-import type { Nullable, Optional } from "@ubloimmo/front-util";
+import {
+  isNumber,
+  isString,
+  type Nullable,
+  type Optional,
+} from "@ubloimmo/front-util";
 import {
   PLURAL_F_PREFIXES,
   PLURAL_M_PREFIXES,
@@ -63,16 +68,26 @@ export function replaceDirectDet(
 
   let replacementPrefix: Optional<Prefix>;
   let matchedPrefix: Optional<Prefix>;
+  let matchedShortPrefix = false;
   for (let i = 0; i < matchPrefixes.length; i++) {
     const mPrefix = matchPrefixes[i];
     const rPrefix = replacementPrefixes[i];
     if (!mPrefix || !rPrefix) continue;
-    const isMatch = normalize(mPrefix.prefix) === normalize(det.word);
-    if (!isMatch) continue;
-
-    matchedPrefix = mPrefix;
-    replacementPrefix = rPrefix;
-    break;
+    const isMatchLongPrefix = normalize(mPrefix.prefix) === normalize(det.word);
+    if (isMatchLongPrefix) {
+      matchedPrefix = mPrefix;
+      replacementPrefix = rPrefix;
+      break;
+    }
+    const isMatchShortPrefix =
+      isString(mPrefix.shortPrefix) &&
+      normalize(mPrefix.shortPrefix) === normalize(det.word);
+    if (isMatchShortPrefix) {
+      matchedShortPrefix = true;
+      matchedPrefix = mPrefix;
+      replacementPrefix = rPrefix;
+      break;
+    }
   }
 
   if (!replacementPrefix || !matchedPrefix) {
@@ -85,14 +100,22 @@ export function replaceDirectDet(
       ? replacementPrefix.shortPrefix
       : replacementPrefix.prefix;
 
+  logger.debug({ det: det });
+  logger.debug({ replacementDet: replacement });
+
   // do not attempt replace if we end up with the same det
   if (normalize(replacement) === normalize(det.word)) return null;
+
+  const replacementLength =
+    matchedShortPrefix && isNumber(matchedPrefix.shortPrefix?.length)
+      ? matchedPrefix.shortPrefix.length
+      : matchedPrefix.prefix.length + 1;
 
   return {
     replace: {
       word: det.word,
       startIndex: det.position,
-      endIndex: det.position + matchedPrefix.prefix.length,
+      endIndex: det.position + replacementLength,
     },
     with: matchCase(det.word, replacement),
   };
