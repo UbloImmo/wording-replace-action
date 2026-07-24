@@ -4,13 +4,23 @@ description: Replaces french words & sentences with aliases in lingui .po catalo
 inputs:
   aliases_json:
     description: path to the aliases.json file to use for replacing aliases in the input PO catalog
-    required: true
+    required: false
+    default: ""
   input_catalog_po:
     description: path to the PO catalog file to use as input
     required: true
   output_catalog_po:
     description: path to the PO catalog file to write as output
-    required: true
+    required: false
+    default: ""
+  aliases_json_dir:
+    description: path to a directory containing multiple json alias files
+    required: false
+    default: ""
+  output_catalog_dir:
+    description: path to a directory in which to output all replaced aliases
+    required: false
+    default: ""
   verbose:
     description: whether to display additional logs
     required: false
@@ -31,6 +41,31 @@ runs:
         up -d --wait mysql python
 
     - shell: bash
+      if: ${{ inputs.aliases_json_dir != '' && inputs.output_catalog_dir != '' }}
+      name: Make multiple alias replacements based on alias dir
+      env:
+        INPUT_CATALOG_PO: ${{ inputs.input_catalog_po }}
+        VERBOSE: ${{ inputs.verbose }}
+        OUTPUT_LOG_TXT: ${{ inputs.output_log_txt }}
+      run: |
+        for alias_filename in ${{ inputs.aliases_json_dir }}/*.json; do
+          local output_filename="${{ inputs.output_catalog_dir }}/$(basename "$filename" .json).po"
+          echo "Applying aliases $alias_filename to input catalog $INPUT_CATALOG_PO, outputing $output_filename"
+          docker compose
+            --project-directory "${{ github.action_path }}"
+            -f "${{ github.action_path }}/compose.yml"
+            run --rm
+            -e GITHUB_WORKSPACE="$GITHUB_WORKSPACE"
+            ts
+            --aliases="/workspace/$alias_filename"
+            --input="/workspace/$INPUT_CATALOG_PO"
+            --output="/workspace/$output_filename"
+            --verbose="$VERBOSE"
+            --logTo="/workspace/$OUTPUT_LOG_TXT
+        done
+
+    - shell: bash
+      if: ${{ inputs.aliases_json != '' && inputs.output_catalog_po != '' }}
       name: Replace aliases in input catalog
       env:
         ALIASES_JSON: ${{ inputs.aliases_json }}
