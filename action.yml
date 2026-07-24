@@ -25,9 +25,9 @@ runs:
   steps:
     - shell: bash
       name: Initialize mysql & python services
-      run: docker compose \
-        --project-directory "${{ github.action_path }}" \
-        -f "${{ github.action_path }}/compose.yml" \
+      run: docker compose
+        --project-directory "${{ github.action_path }}"
+        -f "${{ github.action_path }}/compose.yml"
         up -d --wait mysql python
 
     - shell: bash
@@ -38,22 +38,22 @@ runs:
         OUTPUT_CATALOG_PO: ${{ inputs.output_catalog_po }}
         VERBOSE: ${{ inputs.verbose }}
         OUTPUT_LOG_TXT: ${{ inputs.output_log_txt }}
-      run: docker compose \
-        --project-directory "${{ github.action_path }}" \
-        -f "${{ github.action_path }}/compose.yml" \
-        run --rm \
+      run: docker compose
+        --project-directory "${{ github.action_path }}"
+        -f "${{ github.action_path }}/compose.yml"
+        run --rm
         -e GITHUB_WORKSPACE="$GITHUB_WORKSPACE"
-        ts \
-        --aliases="/workspace/$ALIASES_JSON" \
-        --input="/workspace/$INPUT_CATALOG_PO" \
-        --output="/workspace/$OUTPUT_CATALOG_PO" \
-        --verbose="$VERBOSE" \
+        ts
+        --aliases="/workspace/$ALIASES_JSON"
+        --input="/workspace/$INPUT_CATALOG_PO"
+        --output="/workspace/$OUTPUT_CATALOG_PO"
+        --verbose="$VERBOSE"
         --logTo="/workspace/$OUTPUT_LOG_TXT"
 
     - shell: bash
       if: always()
       name: Cleanup services
-      run: docker compose \
-        --project-directory "${{ github.action_path }}" \
-        -f "${{ github.action_path }}/compose.yml" \
+      run: docker compose
+        --project-directory "${{ github.action_path }}"
+        -f "${{ github.action_path }}/compose.yml"
         down -v
