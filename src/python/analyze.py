@@ -28,6 +28,7 @@ def is_token_related(token_a: Token, token_b: Token) -> bool:
 
   is_related_direct = token_a in token_b.children or token_b in token_a.children
 
+
   if is_related_direct or is_related:
     print()
     print("matched token:", token_a.text)
@@ -41,7 +42,18 @@ def is_token_related(token_a: Token, token_b: Token) -> bool:
     print("-> is related direct", is_related_direct)
     print(token_b.dep_)
 
-  return is_related_direct
+  if not is_related_direct:
+    return False
+
+  # omit verbs with passive subjects
+  # example: "Activé par le locataire"
+  #             ^              ^
+  #         token_b (ROOT)   token_a (obl:agent)
+  # "Activé" is omitted
+  if token_b.dep_ == "ROOT" and token_a.dep_ == "obl:agent":
+    return False
+
+  return True
 
 
 def get_related_tokens(text_doc: Doc, matcher_doc: Doc) -> tuple[set[RelatedToken], list[Token]]:
