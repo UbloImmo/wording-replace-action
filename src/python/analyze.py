@@ -7,12 +7,9 @@ from classes import MatchedWord, RelatedToken, RelatedWord, WordMatch
 
 def is_match(text_doc: Doc, matcher_doc: Doc, i: int):
   if len(matcher_doc) == 1:
-    print(matcher_doc[0].lemma_)
-    print(text_doc[i].lemma_)
     lemma_match = text_doc[i].lemma_.lower() == matcher_doc[0].lemma_.lower()
     text_match = text_doc[i].text.lower() == matcher_doc[0].text.lower()
     return lemma_match or text_match
-    # return lemma_match
 
   if i + len(matcher_doc) > len(text_doc):
     return False
@@ -28,19 +25,19 @@ def is_token_related(token_a: Token, token_b: Token) -> bool:
 
   is_related_direct = token_a in token_b.children or token_b in token_a.children
 
+  print()
+  print("matched token:", token_a.text)
+  print("children", [t.text for t in token_a.children])
+  print()
+  print("maybe related token:", token_b.text)
+  print([t.text for t in token_b.children])
+  print([t.dep_ for t in token_b.children])
+  print()
+  print("-> is related", is_related)
+  print("-> is related direct", is_related_direct)
+  print(token_b.dep_)
 
-  if is_related_direct or is_related:
-    print()
-    print("matched token:", token_a.text)
-    print("children", [t.text for t in token_a.children])
-    print()
-    print("maybe related token:", token_b.text)
-    print([t.text for t in token_b.children])
-    print([t.dep_ for t in token_b.children])
-    print()
-    print("-> is related", is_related)
-    print("-> is related direct", is_related_direct)
-    print(token_b.dep_)
+  print("-> matched is ancestor of maybe related", token_a.is_ancestor(token_b))
 
   if not is_related_direct:
     return False
@@ -51,6 +48,13 @@ def is_token_related(token_a: Token, token_b: Token) -> bool:
   #         token_b (ROOT)   token_a (obl:agent)
   # "Activé" is omitted
   if token_b.dep_ == "ROOT" and token_a.dep_ == "obl:agent":
+    return False
+
+  # omit items where matched is a modifier
+  # example: "L'action est pertinente pour les contrats"
+  #                            ^                  ^
+  #                     token_b (ROOT)     token_a (obl:mod)
+  if token_b.dep_ == "ROOT" and token_a.dep_ == "obl:mod":
     return False
 
   return True
