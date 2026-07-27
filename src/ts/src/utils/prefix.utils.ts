@@ -90,36 +90,57 @@ export function replaceDirectDet(
     }
   }
 
+  logger.debug({ det: det });
   if (!replacementPrefix || !matchedPrefix) {
     logger.error("Missing prefix in data");
     return null;
   }
-
   const replaceWithShortPrefix =
     !!replacementPrefix.shortPrefix && needsShortPrefix(variant.replace.word);
   const replacement = replaceWithShortPrefix
     ? replacementPrefix.shortPrefix!
     : replacementPrefix.prefix;
 
-  logger.debug({ det: det });
   logger.debug({ replacementDet: replacement });
 
   // do not attempt replace if we end up with the same det
   if (normalize(replacement) === normalize(det.word)) return null;
 
-  const replacementLength =
-    matchedShortPrefix && isNumber(matchedPrefix.shortPrefix?.length)
-      ? matchedPrefix.shortPrefix.length
-      : matchedPrefix.prefix.length + (replaceWithShortPrefix ? 1 : 0);
+  let eatRightSpaceCount: number;
+  let appendRightSpace: boolean;
+
+  const matchEndsWithApostrophe = normalize(det.word).endsWith("'");
+  const replaceEndsWithApostrophe = normalize(replacement).endsWith("'");
+
+  // both the same, no need to eat nor add spaces
+  if (matchEndsWithApostrophe === replaceEndsWithApostrophe) {
+    eatRightSpaceCount = 0;
+    appendRightSpace = false;
+  }
+  // "l'" -> "la": add a space right
+  else if (matchEndsWithApostrophe) {
+    eatRightSpaceCount = 0;
+    appendRightSpace = true;
+  }
+  // "la" -> "l'": remove a space right
+  else {
+    eatRightSpaceCount = 1;
+    appendRightSpace = false;
+  }
+
+  const startIndex = det.position;
+  const endIndex = startIndex + det.word.length + eatRightSpaceCount;
+  let replaceWord = matchCase(det.word, replacement);
+  if (appendRightSpace) {
+    replaceWord += " ";
+  }
 
   return {
     replace: {
       word: det.word,
-      startIndex: det.position,
-      endIndex: det.position + replacementLength,
+      startIndex,
+      endIndex,
     },
-    with: matchCase(det.word, replacement),
+    with: replaceWord,
   };
-
-  return null;
 }
